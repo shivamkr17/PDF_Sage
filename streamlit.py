@@ -60,8 +60,6 @@ def getvector_store(text_chunks):
 
 
 def showman(pdf_docs):
-    st.header("Pdf_Sage")
-
     user_question = st.text_input("Ask a question based on the uploaded PDFs",key="user_question")
     Submit=st.button("Submit")
     ask_another_question=st.button("Ask Another Question",on_click=clear_text)
@@ -81,6 +79,51 @@ def clear_text():
 
     
 def show():
+    st.markdown(
+        """
+       <style>
+            html, body, [data-testid="stAppViewContainer"] {
+                background: linear-gradient(to right, #ffffff, #f0f0f0);
+                color: #333333;
+            }
+            .stHeader {
+                font-size: 40px;
+                color: #333333;
+            }
+            .stFileUploader {
+                background-color: #ffffff;
+                padding: 10px;
+                border-radius: 5px;
+                margin-bottom: 20px;
+                border: 1px solid #cccccc;
+            }
+            .stTextInput {
+                padding: 10px;
+                border: 1px solid #cccccc;
+                border-radius: 5px;
+                margin-bottom: 20px;
+                color: #333333;
+            }
+            .stButton button {
+                background-color: gray;
+                color: white;
+                border-radius: 5px;
+                padding: 10px 20px;
+                border: none;
+                margin-top: 10px;
+                cursor: pointer;
+                transition: background-color 0.3s, transform 0.3s;
+            }
+            .stButton button:hover {
+                background-color: #000000;
+                transform: scale(1.05);
+            }
+    </style>
+            
+        """,
+        unsafe_allow_html=True
+    )
+    st.header("Pdf_Sage")
     pdf_docs = st.file_uploader("Upload your PDF Files", accept_multiple_files=True)
     st.session_state["pdf_docs"] = pdf_docs if pdf_docs is not None else st.session_state.get("pdf_docs", [])
     processed = st.session_state.get("processed", False)
