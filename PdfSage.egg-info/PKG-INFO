@@ -1,0 +1,13 @@
+Metadata-Version: 2.1
+Name: PdfSage
+Version: 0.0.1
+Author: Shivam Kumar
+Author-email: shivamkumarsingh1064@gmail.com
+Requires-Dist: google-generativeai
+Requires-Dist: langchain
+Requires-Dist: streamlit
+Requires-Dist: python-dotenv
+Requires-Dist: PyPDF2
+Requires-Dist: pinecone-client
+Requires-Dist: langchain_google_genai
+Requires-Dist: tiktoken

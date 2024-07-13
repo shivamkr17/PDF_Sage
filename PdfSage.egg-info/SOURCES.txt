@@ -1,0 +1,7 @@
+README.md
+setup.py
+PdfSage.egg-info/PKG-INFO
+PdfSage.egg-info/SOURCES.txt
+PdfSage.egg-info/dependency_links.txt
+PdfSage.egg-info/requires.txt
+PdfSage.egg-info/top_level.txt
