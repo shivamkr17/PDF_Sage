@@ -4,7 +4,6 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.vectorstores import Pinecone
-from langchain.prompts import PromptTemplate
 import os
 import google.generativeai as genai
 from langchain.vectorstores import Pinecone as PC
@@ -47,7 +46,7 @@ def getpdf_text(pdf_docs):
 
 
 def gettext_chunks(text):
-    text_splitter= RecursiveCharacterTextSplitter(chunk_size=500,chunk_overlap=20)
+    text_splitter= RecursiveCharacterTextSplitter(chunk_size=5000,chunk_overlap=500)
     text_chunks = text_splitter.split_text(text)
 
     return text_chunks
@@ -64,9 +63,10 @@ def showman(pdf_docs):
     st.header("Pdf_Sage")
 
     user_question = st.text_input("Ask a question based on the uploaded PDFs",key="user_question")
+    Submit=st.button("Submit")
     ask_another_question=st.button("Ask Another Question",on_click=clear_text)
 
-    if user_question and not ask_another_question:
+    if user_question and Submit:
         llm = ChatGoogleGenerativeAI(model="gemini-1.5-pro-latest",temperature=0.7)
         from langchain.chains import RetrievalQA
         qa = RetrievalQA.from_chain_type(llm=llm, chain_type="stuff", retriever=st.session_state["docsearch"].as_retriever())
@@ -81,23 +81,23 @@ def clear_text():
 
     
 def show():
-        st.title("Menu:")
-        pdf_docs = st.file_uploader("Upload your PDF Files", accept_multiple_files=True)
-        st.session_state["pdf_docs"] = pdf_docs if pdf_docs is not None else st.session_state.get("pdf_docs", [])
-        processed = st.session_state.get("processed", False)
+    pdf_docs = st.file_uploader("Upload your PDF Files", accept_multiple_files=True)
+    st.session_state["pdf_docs"] = pdf_docs if pdf_docs is not None else st.session_state.get("pdf_docs", [])
+    processed = st.session_state.get("processed", False)
 
-        if not processed and pdf_docs:
-            if st.button("Submit & Process"):
-                with st.spinner("Processing..."):
-                    raw_text = getpdf_text(pdf_docs)
-                    text_chunks = gettext_chunks(raw_text)
-                    docsearch = getvector_store(text_chunks)
-                    st.session_state["docsearch"] = docsearch
-                    st.session_state["processed"] = True
-                st.success("Done!")
+    if not processed and pdf_docs:
+        if st.button("Submit & Process"):
+            with st.spinner("Processing..."):
+                raw_text = getpdf_text(pdf_docs)
+                text_chunks = gettext_chunks(raw_text)
+                docsearch = getvector_store(text_chunks)
+                st.session_state["docsearch"] = docsearch
+                st.session_state["processed"] = True
+            st.success("Done!")
     
-        showman(st.session_state["pdf_docs"])
+    showman(st.session_state["pdf_docs"])
 
 
+show()
 
 
